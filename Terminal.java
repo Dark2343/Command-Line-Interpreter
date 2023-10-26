@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.io.File;
@@ -254,23 +253,42 @@ public class Terminal{
         
     }
     
+    // MOHAMED
+    /**
+     * Wc stands for "word count," and as the name suggests, it is mainly used for counting purpose. By default, it displays four-columnar output. 
+     * First column shows number of lines present in a file specified, 
+     * second column shows number of words present in the file, 
+     * third column shows number of characters present in file,
+     * fourth column itself is the file name which are given as argument 
+     * Example: wc file.txt 
+     * Output: 9 79 483 file.txt 
+     * Explanation: 
+     * # 9 lines, 79 word, 483 character with spaces, file name
+     */
     public void wc()
     {
-        /*
-        Wc stands for "word count," and as the name suggests, it is mainly 
-            used for counting purpose. By default, it displays four-columnar 
-            output. 
-            First column shows number of lines present in a file specified, 
-            second column shows number of words present in the file, third 
-            column shows number of characters present in file and fourth 
-            column itself is the file name which are given as argument 
-            Example: 
-            wc file.txt 
-            Output: 
-            9 79 483 file.txt 
-            Explanation: 
-            # 9 lines, 79 word, 483 character with spaces, file name
-         */
+        try {
+            int lineNum = 0, wordNum = 0, characterNum = 0;
+            File file = new File(parser.getArgs()[0]);
+            Scanner reader = new Scanner(file);
+            
+            while (reader.hasNextLine()) 
+            {
+                lineNum++;
+                String line = reader.nextLine();
+                String[] words = line.split(" ");
+                wordNum += words.length;
+                for(int i = 0; i < words.length; i++)
+                {
+                    characterNum += words[i].length();
+                }
+            }
+            reader.close();
+
+            System.out.println(lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0]);
+        } catch (Exception e) {
+            System.out.println("File does not exist");
+        }
     }
 
 /*     // MIGHT NOT IMPLEMENT
