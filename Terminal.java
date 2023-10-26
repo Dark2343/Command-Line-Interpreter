@@ -1,5 +1,6 @@
 import java.lang.reflect.Method;
 import java.util.Scanner;
+import java.io.File;
 
 public class Terminal{
     
@@ -39,9 +40,10 @@ public class Terminal{
         // Make a case for ls - r
 
     }
-
+// ZIAD
     public void mkdir()
     {
+        // https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java
         /*
             Takes  1 or more  arguments  and creates  a directory  for each 
             argument. Each argument can be: 
@@ -51,9 +53,12 @@ public class Terminal{
             new directory is created in the given path)
          */
     }
+// ZIAD
 
     public void rmdir()
     {
+        //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
+        // answer 2
         /*
             Implement all these cases: 
             1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and 
@@ -64,6 +69,7 @@ public class Terminal{
          */
     }
 
+    // ZIAD
     public void touch()
     {
         /*
@@ -73,17 +79,23 @@ public class Terminal{
          */
     }
 
+    // ZIAD
     public void cp()
     {
+        //
         // Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
         // Make a case for cp - r
     }
 
+    // ZIAD
     public void rm()
     {
+        // https://www.w3schools.com/java/java_files_delete.asp
         // Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
+
     }
 
+    // ZIAD
     public void cat()
     {
         // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
