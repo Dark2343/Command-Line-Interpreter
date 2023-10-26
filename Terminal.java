@@ -53,7 +53,7 @@ public class Terminal {
     {
         /*
             Implement all these cases: 
-            1.  rmdir  takes  1  argument  which  is  “*”  (e.g.  rmdir  *)  and 
+            1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and 
             removes all the empty directories  in the current directory. 
             • rmdir takes 1 argument which is either the full path or the 
             relative (short) path and removes the given directory only if 
@@ -87,13 +87,13 @@ public class Terminal {
 
     public void cat()
     {
-        // Takes 1 argument and prints the file’s content or takes 2 arguments and concatenates the content of the 2 files and prints it.
+        // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
     }
 
     public void we()
     {
         /*
-            Wc stands for “word count,” and as the name suggests, it is mainly 
+            Wc stands for "word count," and as the name suggests, it is mainly 
             used for counting purpose. By default, it displays four-columnar 
             output. 
             First column shows number of lines present in a file specified, 
@@ -114,7 +114,7 @@ public class Terminal {
         /*
             Format: command  > FileName 
             Redirects the output of the first command to be written to a file. If the 
-            file doesn’t exist, it will be created. 
+            file doesn't exist, it will be created. 
             If the file exists, its original content will be replaced. 
             Example: echo Hello World > myFile.txt 
             ls > file 
@@ -130,7 +130,7 @@ public class Terminal {
     {
         /*
             Takes no parameters and displays an enumerated list with the 
-            commands you’ve used in the past 
+            commands you've used in the past 
             Example: history 
             Output: 1   ls 
             2   mkdir tutorial 
