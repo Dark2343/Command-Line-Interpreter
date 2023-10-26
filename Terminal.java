@@ -66,7 +66,7 @@ public class Terminal{
             }
         }
     }
-
+    
     // MOHAMED
     /**
      * Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
@@ -74,7 +74,7 @@ public class Terminal{
     public void ls()
     {
         File[] contents = directory.listFiles();
-
+        
         if (parser.getArgs().length == 0) 
         {
             for(File e : contents)
@@ -94,7 +94,7 @@ public class Terminal{
             for(int i = contents.length - 1; i >= 0; i--)
             {
                 File e = contents[i];
-
+                
                 if (e.isFile()) {
                     System.out.println("<FILE> " + e.getName());
                 }
@@ -136,15 +136,15 @@ public class Terminal{
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
         // answer 2
         /*
-            Implement all these cases: 
-            1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and 
-            removes all the empty directories  in the current directory. 
+        Implement all these cases: 
+        1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and 
+        removes all the empty directories  in the current directory. 
             • rmdir takes 1 argument which is either the full path or the 
             relative (short) path and removes the given directory only if 
             it is empty.
-         */
+            */
     }
-
+    
     // ZIAD
     public void touch()
     {
@@ -152,9 +152,9 @@ public class Terminal{
             Takes  1 argument  which  is  either  the  full path  or  the 
             relative (short)  path  that  ends  with  a  file  name  and  creates 
             this file.
-         */
+            */
     }
-
+    
     // ZIAD
     public void cp()
     {
@@ -168,19 +168,73 @@ public class Terminal{
     {
         // https://www.w3schools.com/java/java_files_delete.asp
         // Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
-
+        
     }
-
-    // ZIAD
+    
+    // MOHAMED
+    /**
+     * Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
+     */
     public void cat()
     {
-        // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
-    }
+        // 1 File
+        if (parser.getArgs().length == 1) 
+        {
+            try {
+                File file = new File(parser.getArgs()[0]);
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String line = reader.nextLine();
+                    System.out.println(line);
+                }
+                reader.close();
+            } catch (Exception e) {
+                System.out.println("File does not exist");
+            }
+        }
+        
+        // 2 Files
+        else if (parser.getArgs().length == 2) 
+        {
+            try {
+                File file1 = new File(parser.getArgs()[0]);
+                File file2 = new File(parser.getArgs()[1]);
+                Scanner reader1 = new Scanner(file1);
+                Scanner reader2 = new Scanner(file2);
+                while (reader1.hasNextLine()) {
+                    String line = reader1.nextLine();
+                    System.out.println(line);
+                }
+                reader1.close();
+                
+                while (reader2.hasNextLine()) {
+                    String line = reader2.nextLine();
+                    System.out.println(line);
+                }
+                reader2.close();
+            } catch (Exception e) {
+                System.out.println("One of the files does not exist");
+            }
+        }
+        
+        // More than 2 files
+        else if (parser.getArgs().length > 2) 
+        {
+            System.out.println("1 or 2 files only allowed");
+        }
 
+        // No files
+        else
+        {
+            System.out.println("No file specified");
+        }
+        
+    }
+    
     public void wc()
     {
         /*
-            Wc stands for "word count," and as the name suggests, it is mainly 
+        Wc stands for "word count," and as the name suggests, it is mainly 
             used for counting purpose. By default, it displays four-columnar 
             output. 
             First column shows number of lines present in a file specified, 
