@@ -1,6 +1,5 @@
 import java.lang.reflect.Method;
 import java.util.Scanner;
-import java.util.Arrays;
 import java.io.File;
 
 public class Terminal{
@@ -34,14 +33,14 @@ public class Terminal{
             current directory to the previous directory. 
             3.  cd  takes  1  argument  which  is  either  the  full  path  or  the 
             relative (short) path and changes the current path to that path.
-         */
+        */
     }
 
     // MOHAMED
     public void ls()
     {
-        // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically.
-        // Make a case for ls - r
+        // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
+
         File directory = new File(System.getProperty("user.dir"));
         File[] contents = directory.listFiles();
 
@@ -74,7 +73,7 @@ public class Terminal{
             }
             System.out.println();
         }
-        
+
         else
         {
             System.out.println("This command takes no arguments");
@@ -86,6 +85,11 @@ public class Terminal{
     // ZIAD
     public void mkdir()
     {
+        /*
+            Takes  1 or more  arguments  and creates  a directory  for each argument. Each argument can be: 
+            • Directory  name  (in  this  case  the  new  directory  is  created  in the current directory) 
+            Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
+        */
         String[] args = parser.getArgs();
         for (String arg : args){
             if (new File(arg).mkdirs()){
@@ -94,14 +98,6 @@ public class Terminal{
                 System.out.println(arg + " directory cannot be created.");
             }
         }
-        /*
-            Takes  1 or more  arguments  and creates  a directory  for each 
-            argument. Each argument can be: 
-            • Directory  name  (in  this  case  the  new  directory  is  created  in 
-            the current directory) 
-            Path (full/short) that ends with a directory name (in this case the 
-            new directory is created in the given path)
-         */
     }
 
     // ZIAD
