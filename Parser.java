@@ -8,11 +8,14 @@ class Parser {
 
     public boolean parse(String input)
     {
+        String[] tokens = input.split(" ");
+        
         return true;
     }
-
+    
     public String getCommandName()
     {
+        String[] commands = {"echo", "pwd", "cd", "ls", "mkdir", "rmdir", "touch", "cp", "rm", "cat", "we", "exit"};
         return "lol";
     }
      

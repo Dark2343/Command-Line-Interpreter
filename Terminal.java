@@ -3,15 +3,16 @@ public class Terminal {
 
     //Implement each command in a method, for example: 
 
-    public void echo()
+    public void echo(String args)
     {
         // Takes 1 argument and prints it.
+        System.out.println(args);
     }
 
-    public String pwd()
+    public void pwd()
     {
         // Takes no arguments and prints the current path.
-        return "lol";
+        
     }
 
     public void cd(String[] args)
@@ -138,12 +139,14 @@ public class Terminal {
          */
     }
 
-    // EXIT quits the program
+    public void exit()
+    {
+        // Quits the program
+    }
 
     /*
-        If  the  user  enters  a  wrong  command  or  bad  parameters  (invalid  path,  file 
-        instead  of  directory  in  certain  commands,  etc.),  the  program  should  print  
-        some error messages without terminating. 
+        If  the  user  enters  a  wrong  command  or  bad  parameters  (invalid  path,  file instead  of  directory  in  certain  commands,  etc.),
+        the  program  should  print some error messages without terminating. 
     */
 
     //This method will choose the suitable command method to be called 
@@ -154,6 +157,6 @@ public class Terminal {
 
     public static void main(String[] args)
     {
-
+        System.out.println(System.getProperty("user.home"));
     } 
 }
