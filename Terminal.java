@@ -130,7 +130,7 @@ public class Terminal{
         Path path = Paths.get(directory.getAbsolutePath());
         for (String arg : args){
             Path argPath = path.resolve(arg);
-            File f = new File(argPath.toString());
+            File f = argPath.toFile();
             if (f.exists()){
                 System.out.println(arg + " directory already exists.");
             } else if (f.mkdir()){
@@ -159,6 +159,7 @@ public class Terminal{
             return;
         }
 
+        // Case 1: rmdir *
         if (args[0].equals("*")){
             File[] contents = directory.listFiles();
 
@@ -177,27 +178,30 @@ public class Terminal{
             }
 
         }
+        // Case 2: rmdir <folder>
         else {
-            File folder = new File(args[0]);
-            if (folder.isAbsolute()){
-                String folderName = folder.getName();
-                if (folder.exists()){
-                    try {
-                        if (folder.delete()){
-                            System.out.println("Deleted folder " + folderName);
-                        } else {
-                            System.out.println("Cannot delete non-empty folder " + folderName);
+            Path path = Paths.get(directory.getAbsolutePath());
+            Path argPath = path.resolve(args[0]);
+            File folder = argPath.toFile();
 
-                        }
-                    }
-                    catch (Exception e){
-                        System.out.println("Cannot remove dir. Reason:" + e.getMessage());
+            String folderName = folder.getName();
+            if (folder.exists() && folder.isDirectory()) {
+                try {
+                    if (folder.delete()){
+                        System.out.println("Deleted folder " + folderName);
+                    } else {
+                        System.out.println("Cannot delete non-empty folder " + folderName);
+
                     }
                 }
-                else {
-                    System.out.println(folderName + " folder doesn't exist");
+                catch (Exception e){
+                    System.out.println("Cannot remove dir. Reason:" + e.getMessage());
                 }
             }
+            else {
+                System.out.println(folderName + " folder doesn't exist");
+            }
+
 
         }
     }
