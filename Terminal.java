@@ -54,7 +54,6 @@ public class Terminal{
                 System.out.println(arg + " directory cannot be created.");
             }
         }
-        // https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java
         /*
             Takes  1 or more  arguments  and creates  a directory  for each 
             argument. Each argument can be: 
