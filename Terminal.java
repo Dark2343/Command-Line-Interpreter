@@ -1,5 +1,5 @@
-import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.nio.file.Path;
@@ -10,6 +10,7 @@ public class Terminal{
     static Parser parser = new Parser();
     static Scanner scanner = new Scanner(System.in);
     static File directory = new File(System.getProperty("user.dir"));
+    static ArrayList<String> commandHistory = new ArrayList<String>();
 
     // MOHAMED
     /**
@@ -28,7 +29,8 @@ public class Terminal{
      */
     public void pwd()
     {
-        System.out.println("Current path: " + System.getProperty("user.dir"));
+        System.out.println("Current path: " + directory.getAbsolutePath());
+        System.out.println();
     }
 
     // MOHAMED
@@ -69,7 +71,7 @@ public class Terminal{
             }
         }
     }
-
+    
     // MOHAMED
     /**
      * Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
@@ -77,7 +79,7 @@ public class Terminal{
     public void ls()
     {
         File[] contents = directory.listFiles();
-
+        
         if (parser.getArgs().length == 0) 
         {
             for(File e : contents)
@@ -97,7 +99,7 @@ public class Terminal{
             for(int i = contents.length - 1; i >= 0; i--)
             {
                 File e = contents[i];
-
+                
                 if (e.isFile()) {
                     System.out.println("<FILE> " + e.getName());
                 }
@@ -116,6 +118,7 @@ public class Terminal{
 
     }
 
+    // ZIAD
     /**
      * Takes 1 or more arguments and creates a directory for each argument. Each argument can be:
      * Directory name (in this case the new directory is created in the current directory)
@@ -140,13 +143,13 @@ public class Terminal{
 
     // ZIAD
     /**
-         *  Implement all these cases:
-         *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
-         *  removes all the empty directories  in the current directory.
-         *  2. rmdir takes 1 argument which is either the full path or the
-         *  relative (short) path and removes the given directory only if
-         *  it is empty.
-         */
+     *  Implement all these cases:
+     *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
+     *  removes all the empty directories  in the current directory.
+     *  2. rmdir takes 1 argument which is either the full path or the
+     *  relative (short) path and removes the given directory only if
+     *  it is empty.
+     */
     public void rmdir()
     {
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
@@ -198,7 +201,7 @@ public class Terminal{
 
         }
     }
-
+    
     // ZIAD
     public void touch()
     {
@@ -206,9 +209,9 @@ public class Terminal{
             Takes  1 argument  which  is  either  the  full path  or  the 
             relative (short)  path  that  ends  with  a  file  name  and  creates 
             this file.
-         */
+            */
     }
-
+    
     // ZIAD
     public void cp()
     {
@@ -222,32 +225,105 @@ public class Terminal{
     {
         // https://www.w3schools.com/java/java_files_delete.asp
         // Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
-
+        
     }
-
-    // ZIAD
+    
+    // MOHAMED
+    /**
+     * Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
+     */
     public void cat()
     {
-        // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
-    }
+        // 1 File
+        if (parser.getArgs().length == 1) 
+        {
+            try {
+                File file = new File(parser.getArgs()[0]);
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String line = reader.nextLine();
+                    System.out.println(line);
+                }
+                reader.close();
+            } catch (Exception e) {
+                System.out.println("File does not exist");
+            }
+        }
+        
+        // 2 Files
+        else if (parser.getArgs().length == 2) 
+        {
+            try {
+                File file1 = new File(parser.getArgs()[0]);
+                File file2 = new File(parser.getArgs()[1]);
+                Scanner reader1 = new Scanner(file1);
+                Scanner reader2 = new Scanner(file2);
+                while (reader1.hasNextLine()) {
+                    String line = reader1.nextLine();
+                    System.out.println(line);
+                }
+                reader1.close();
+                
+                while (reader2.hasNextLine()) {
+                    String line = reader2.nextLine();
+                    System.out.println(line);
+                }
+                reader2.close();
+            } catch (Exception e) {
+                System.out.println("One of the files does not exist");
+            }
+        }
+        
+        // More than 2 files
+        else if (parser.getArgs().length > 2) 
+        {
+            System.out.println("1 or 2 files only allowed");
+        }
 
+        // No files
+        else
+        {
+            System.out.println("No file specified");
+        }
+        
+    }
+    
+    // MOHAMED
+    /**
+     * Wc stands for "word count," and as the name suggests, it is mainly used for counting purpose. By default, it displays four-columnar output. 
+     * First column shows number of lines present in a file specified, 
+     * second column shows number of words present in the file, 
+     * third column shows number of characters present in file,
+     * fourth column itself is the file name which are given as argument 
+     * Example: wc file.txt 
+     * Output: 9 79 483 file.txt 
+     * Explanation: 
+     * # 9 lines, 79 word, 483 character with spaces, file name
+     */
     public void wc()
     {
-        /*
-            Wc stands for "word count," and as the name suggests, it is mainly 
-            used for counting purpose. By default, it displays four-columnar 
-            output. 
-            First column shows number of lines present in a file specified, 
-            second column shows number of words present in the file, third 
-            column shows number of characters present in file and fourth 
-            column itself is the file name which are given as argument 
-            Example: 
-            wc file.txt 
-            Output: 
-            9 79 483 file.txt 
-            Explanation: 
-            # 9 lines, 79 word, 483 character with spaces, file name
-         */
+        try {
+            int lineNum = 0, wordNum = 0, characterNum = 0;
+            File file = new File(parser.getArgs()[0]);
+            Scanner reader = new Scanner(file);
+            
+            while (reader.hasNextLine()) 
+            {
+                lineNum++;
+                String line = reader.nextLine();
+                String[] words = line.split(" ");
+                wordNum += words.length;
+                for(int i = 0; i < words.length; i++)
+                {
+                    characterNum += words[i].length();
+                }
+            }
+            reader.close();
+
+            System.out.println(lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0]);
+        } catch (Exception e) {
+            System.out.println("File does not exist");
+        }
     }
 
 /*     // MIGHT NOT IMPLEMENT
@@ -269,16 +345,29 @@ public class Terminal{
         // like command 1 but appends to the file if exists
     }
 */
+
+    // MOHAMED
+    /**
+     * Takes no parameters and displays an enumerated list with the commands you've used in the past 
+     * Example: history 
+     * Output: 
+     * 1   ls 
+     * 2   mkdir tutorial 
+     * 3   history
+     */
     public void history()
     {
-        /*
-            Takes no parameters and displays an enumerated list with the 
-            commands you've used in the past 
-            Example: history 
-            Output: 1   ls 
-            2   mkdir tutorial 
-            3   history
-         */
+        if (commandHistory.size() != 0)
+        {
+            for(int i = 0; i < commandHistory.size(); i++)
+            {
+                System.out.println((i + 1) + "   " + commandHistory.get(i));
+            }
+        }
+        else
+        {
+            System.out.println("No commands were inputted yet");
+        }
     }
 
     public void exit()
@@ -311,6 +400,7 @@ public class Terminal{
     {
         System.out.print("TERMINAL>");
         String input = scanner.nextLine();
+        commandHistory.add(input);
         parser.parse(input);
         chooseCommandAction();
     }
