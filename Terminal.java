@@ -116,6 +116,7 @@ public class Terminal{
 
     }
 
+    // ZIAD
     /**
      * Takes 1 or more arguments and creates a directory for each argument. Each argument can be:
      * Directory name (in this case the new directory is created in the current directory)
@@ -138,13 +139,13 @@ public class Terminal{
 
     // ZIAD
     /**
-         *  Implement all these cases:
-         *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
-         *  removes all the empty directories  in the current directory.
-         *  2. rmdir takes 1 argument which is either the full path or the
-         *  relative (short) path and removes the given directory only if
-         *  it is empty.
-         */
+     *  Implement all these cases:
+     *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
+     *  removes all the empty directories  in the current directory.
+     *  2. rmdir takes 1 argument which is either the full path or the
+     *  relative (short) path and removes the given directory only if
+     *  it is empty.
+     */
     public void rmdir()
     {
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
