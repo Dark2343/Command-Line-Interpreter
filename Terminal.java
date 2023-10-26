@@ -1,4 +1,5 @@
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 
@@ -7,6 +8,7 @@ public class Terminal{
     static Parser parser = new Parser();
     static Scanner scanner = new Scanner(System.in);
     static File directory = new File(System.getProperty("user.dir"));
+    static ArrayList<String> commandHistory = new ArrayList<String>();
 
     // MOHAMED
     /**
@@ -25,7 +27,8 @@ public class Terminal{
      */
     public void pwd()
     {
-        System.out.println("Current path: " + System.getProperty("user.dir"));
+        System.out.println("Current path: " + directory.getAbsolutePath());
+        System.out.println();
     }
 
     // MOHAMED
@@ -310,16 +313,28 @@ public class Terminal{
         // like command 1 but appends to the file if exists
     }
 */
+
+    // MOHAMED
+    /**
+     * Takes no parameters and displays an enumerated list with the commands you've used in the past 
+     * Example: history 
+     * Output: 
+     * 1   ls 
+     * 2   mkdir tutorial 
+     * 3   history
+     */
     public void history()
     {
-        /*
-            Takes no parameters and displays an enumerated list with the 
-            commands you've used in the past 
-            Example: history 
-            Output: 1   ls 
-            2   mkdir tutorial 
-            3   history
-         */
+        if (commandHistory.size() != 0)
+        {
+            for(int i = 0; i < commandHistory.size(); i++)
+            {
+                System.out.println((i + 1) + "   " + commandHistory.get(i));
+            }
+        }
+        else
+        {
+            System.out.println("No commands were inputted yet");        }
     }
 
     public void exit()
@@ -352,6 +367,7 @@ public class Terminal{
     {
         System.out.print("TERMINAL>");
         String input = scanner.nextLine();
+        commandHistory.add(input);
         parser.parse(input);
         chooseCommandAction();
     }
