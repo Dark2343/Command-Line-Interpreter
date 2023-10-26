@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Terminal{
     
@@ -122,8 +124,10 @@ public class Terminal{
     public void mkdir()
     {
         String[] args = parser.getArgs();
+        Path path = Paths.get(directory.getAbsolutePath());
         for (String arg : args){
-            File f = new File(arg);
+            Path argPath = path.resolve(arg);
+            File f = new File(argPath.toString());
             if (f.exists()){
                 System.out.println(arg + " directory already exists.");
             } else if (f.mkdir()){
@@ -147,24 +151,51 @@ public class Terminal{
     {
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
         String[] args = parser.getArgs();
+        if (args.length > 1){
+            System.out.println("rmdir only accepts 1 argument");
+            return;
+        }
+
         if (args[0].equals("*")){
-            //Delete all
+            File[] contents = directory.listFiles();
+
+            if (contents != null){
+                for (File file : contents) {
+                    if (file.isDirectory()){
+                        String folderName = file.getName();
+                        if (file.delete()){
+                            System.out.println("Deleted folder " + folderName);
+                        } else {
+                            System.out.println("Cannot delete non-empty folder " + folderName);
+
+                        }
+                    }
+                }
+            }
+
         }
         else {
             File folder = new File(args[0]);
-            if (folder.exists()){
-                try {
-                    if (folder.delete()){
-                        System.out.println("Deleted folder " + args[0]);
-                    } else {
-                        System.out.println("Cannot delete folder " + args[0]);
+            if (folder.isAbsolute()){
+                String folderName = folder.getName();
+                if (folder.exists()){
+                    try {
+                        if (folder.delete()){
+                            System.out.println("Deleted folder " + folderName);
+                        } else {
+                            System.out.println("Cannot delete non-empty folder " + folderName);
 
+                        }
+                    }
+                    catch (Exception e){
+                        System.out.println("Cannot remove dir. Reason:" + e.getMessage());
                     }
                 }
-                catch (Exception e){
-                    System.out.println("Cannot remove dir. Reason:" + e.getMessage());
+                else {
+                    System.out.println(folderName + " folder doesn't exist");
                 }
             }
+
         }
     }
 
