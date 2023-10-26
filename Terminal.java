@@ -9,30 +9,34 @@ public class Terminal{
     static File directory = new File(System.getProperty("user.dir"));
 
     // MOHAMED
+    /**
+     * Takes 1 argument and prints it.
+     */
     public void echo()
     {
-        // Takes 1 argument and prints it.
         String args = String.join(" ", parser.getArgs());
         System.out.println(args);
     }
 
     // MOHAMED
+    
+    /**
+     * Takes no arguments and prints the current path.
+     */
     public void pwd()
     {
-        // Takes no arguments and prints the current path.
         System.out.println("Current path: " + System.getProperty("user.dir"));
     }
 
     // MOHAMED
+    /**
+     * Implement all these cases: 
+     * 1. cd takes no arguments and changes the current path to the path of your home directory. 
+     * 2. cd takes 1 argument which is ".." (e.g. cd ..) and changes the current directory to the previous directory. 
+     * 3. cd  takes  1  argument  which  is  either  the  full  path  or  the relative (short) path and changes the current path to that path.
+     */
     public void cd()
     {
-        /*
-        * Implement all these cases: 
-        1.  cd takes no arguments and changes the current path to the path of your home directory. 
-        2.  cd takes 1 argument which is ".." (e.g. cd ..) and changes the current directory to the previous directory. 
-        3.  cd  takes  1  argument  which  is  either  the  full  path  or  the relative (short) path and changes the current path to that path.
-        */
-
         // Case 1
         if (parser.getArgs().length == 0)
         {
@@ -64,9 +68,11 @@ public class Terminal{
     }
 
     // MOHAMED
+    /**
+     * Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
+     */
     public void ls()
     {
-        // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
         File[] contents = directory.listFiles();
 
         if (parser.getArgs().length == 0) 
@@ -114,11 +120,6 @@ public class Terminal{
      */
     public void mkdir()
     {
-        /*
-            Takes  1 or more  arguments  and creates  a directory  for each argument. Each argument can be: 
-            • Directory  name  (in  this  case  the  new  directory  is  created  in the current directory) 
-            Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
-        */
         String[] args = parser.getArgs();
         for (String arg : args){
             if (new File(arg).mkdirs()){
