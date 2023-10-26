@@ -10,14 +10,14 @@ public class Terminal{
     public void echo()
     {
         // Takes 1 argument and prints it.
-        String args = String.join(" ",parser.getArgs());
+        String args = String.join(" ", parser.getArgs());
         System.out.println(args);
     }
 
     public void pwd()
     {
         // Takes no arguments and prints the current path.
-        
+        System.out.println(System.getProperty("user.dir"));
     }
 
     public void cd(String[] args)
@@ -159,12 +159,13 @@ public class Terminal{
             meth.invoke(this);
             
         } catch (Exception e) {
-            System.out.println("No such command exists you idiot");
+            System.out.println("Please enter a valid command");
         }
     }
 
     public void execute()
     {
+        System.out.print("TERMINAL>");
         String input = scanner.nextLine();
         parser.parse(input);
         chooseCommandAction();
@@ -176,13 +177,12 @@ class Parser {
     String commandName; 
     String[] args;
         
-    public boolean parse(String input)
+    public void parse(String input)
     {
         String[] tokens = input.split(" ");
         commandName = tokens[0];
         args = new String[tokens.length - 1];
         System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
-        return true;
     }
     
     public String getCommandName()
