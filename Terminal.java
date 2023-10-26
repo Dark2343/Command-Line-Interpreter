@@ -335,7 +335,8 @@ public class Terminal{
         }
         else
         {
-            System.out.println("No commands were inputted yet");        }
+            System.out.println("No commands were inputted yet");
+        }
     }
 
     public void exit()
