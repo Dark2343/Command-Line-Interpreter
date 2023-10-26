@@ -6,7 +6,7 @@ public class Terminal{
     static Parser parser = new Parser();
     static Scanner scanner = new Scanner(System.in);
 
-    // Implement each command in a method, for example: 
+    // MOHAMED
     public void echo()
     {
         // Takes 1 argument and prints it.
@@ -14,12 +14,14 @@ public class Terminal{
         System.out.println(args);
     }
 
+    // MOHAMED
     public void pwd()
     {
         // Takes no arguments and prints the current path.
         System.out.println(System.getProperty("user.dir"));
     }
 
+    // MOHAMED
     public void cd(String[] args)
     {
         /*
@@ -33,13 +35,14 @@ public class Terminal{
          */
     }
 
+    // MOHAMED
     public void ls()
     {
         // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically.
         // Make a case for ls - r
-
     }
 
+    // MOHAMED
     public void mkdir()
     {
         /*
@@ -52,6 +55,7 @@ public class Terminal{
          */
     }
 
+    // MOHAMED
     public void rmdir()
     {
         /*
