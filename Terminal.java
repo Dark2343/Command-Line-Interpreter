@@ -1,5 +1,6 @@
 import java.lang.reflect.Method;
 import java.util.Scanner;
+import java.util.Arrays;
 import java.io.File;
 
 public class Terminal{
@@ -41,6 +42,45 @@ public class Terminal{
     {
         // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically.
         // Make a case for ls - r
+        File directory = new File(System.getProperty("user.dir"));
+        File[] contents = directory.listFiles();
+
+        if (parser.getArgs().length == 0) 
+        {
+            for(File e : contents)
+            {
+                if (e.isFile()) {
+                    System.out.println("<FILE> " + e.getName());
+                }
+                else if (e.isDirectory()) {
+                    System.out.println("<DIR> " + e.getName());
+                }
+            }
+            System.out.println();
+        }
+        
+        else if (parser.getArgs()[0].equals("-r"))
+        {
+            for(int i = contents.length - 1; i >= 0; i--)
+            {
+                File e = contents[i];
+
+                if (e.isFile()) {
+                    System.out.println("<FILE> " + e.getName());
+                }
+                else if (e.isDirectory()) {
+                    System.out.println("<DIR> " + e.getName());
+                }
+            }
+            System.out.println();
+        }
+        
+        else
+        {
+            System.out.println("This command takes no arguments");
+            System.out.println();
+        }
+
     }
 
     // ZIAD
@@ -175,6 +215,7 @@ public class Terminal{
             
         } catch (Exception e) {
             System.out.println("Please enter a valid command");
+            System.out.println();
         }
     }
 
