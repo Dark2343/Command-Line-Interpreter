@@ -62,12 +62,25 @@ public class Terminal{
         else
         {
             String args = String.join(" ", parser.getArgs());
+            
             try {
-                directory = new File(args);
-                System.out.println("Current path: " + directory.getAbsolutePath());
-                System.out.println();
+                Path path = Paths.get(directory.getAbsolutePath());
+                Path argPath = path.resolve(args);
+                
+                if (argPath.toFile().exists()) 
+                {
+                    directory = new File(argPath.toString());
+                    System.out.println("Current path: " + directory.getAbsolutePath());
+                    System.out.println();
+                }
+                else
+                {
+                    Exception e = new Exception();
+                    throw e;
+                }
             } catch (Exception e) {
                 System.out.println("Invalid path");
+                System.out.println();
             }
         }
     }
