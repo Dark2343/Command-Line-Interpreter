@@ -165,7 +165,7 @@ public class Terminal{
      */
     public void rmdir()
     {
-        //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
+        // Gets the folder name from the arguments
         String[] args = parser.getArgs();
         if (args.length > 1){
             System.out.println("rmdir only accepts 1 argument");
@@ -220,29 +220,77 @@ public class Terminal{
     }
     
     // ZIAD
+    /**
+     * Takes  1 argument  which  is  either  the  full path  or  the
+     * relative (short)  path  that  ends  with  a  file  name  and  creates
+     * this file.
+     */
     public void touch()
     {
-        /*
-            Takes  1 argument  which  is  either  the  full path  or  the 
-            relative (short)  path  that  ends  with  a  file  name  and  creates 
-            this file.
-            */
+        String[] args = parser.getArgs();
+        Path path = Paths.get(directory.getAbsolutePath());
+        Path argPath = path.resolve(args[0]);
+        File f = argPath.toFile();
+        if (f.exists()){
+            System.out.println(args[0] + " file already exists.");
+        } else {
+            try {
+                if (f.createNewFile()){
+                    System.out.println(args[0] + " file created successfully.");
+                } else {
+                    System.out.println(args[0] + " file cannot be created.");
+                }
+            } catch (java.io.IOException e) {
+                System.out.println("An error occurred.");
+            }
+        }
     }
     
     // ZIAD
+
+    /**
+     * Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
+     * Arg -r
+     */
     public void cp()
     {
-        //
-        // Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
-        // Make a case for cp - r
+
     }
 
     // ZIAD
+
+    /**
+     * Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
+     *
+     */
     public void rm()
     {
-        // https://www.w3schools.com/java/java_files_delete.asp
-        // Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
-        
+        // Gets the file name from the arguments
+        String[] args = parser.getArgs();
+        if (args.length > 1){
+            System.out.println("rm only accepts 1 argument");
+            return;
+        }
+
+        Path path = Paths.get(directory.getAbsolutePath());
+        Path argPath = path.resolve(args[0]);
+        File file = argPath.toFile();
+         if (file.exists() && file.isFile()){
+            try {
+                if (file.delete()){
+                    System.out.println("Deleted file " + file.getName());
+                } else {
+                    System.out.println("Cannot delete file " + file.getName());
+
+                }
+            }
+            catch (Exception e){
+                System.out.println("Cannot remove file. Reason:" + e.getMessage());
+            }
+         } else {
+             System.out.println(file.getName() + " file doesn't exist");
+         }
+
     }
     
     // MOHAMED
