@@ -9,7 +9,7 @@ class Parser {
     public boolean parse(String input)
     {
         String[] tokens = input.split(" ");
-        
+        System.out.println(tokens[0]);
         return true;
     }
     
@@ -18,7 +18,7 @@ class Parser {
         String[] commands = {"echo", "pwd", "cd", "ls", "mkdir", "rmdir", "touch", "cp", "rm", "cat", "we", "exit"};
         return "lol";
     }
-     
+    
     public String[] getArgs()
     {
         String[] placeholder = {"car","bmw"};

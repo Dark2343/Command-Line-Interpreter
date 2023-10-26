@@ -158,5 +158,7 @@ public class Terminal {
     public static void main(String[] args)
     {
         System.out.println(System.getProperty("user.home"));
+        Parser parser = new Parser();
+        parser.parse("echo this is a retarded mess");
     } 
 }
