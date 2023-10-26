@@ -86,7 +86,14 @@ public class Terminal{
     // ZIAD
     public void mkdir()
     {
-        // https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java
+        String[] args = parser.getArgs();
+        for (String arg : args){
+            if (new File(arg).mkdirs()){
+                System.out.println(arg + " directory created successfully.");
+            } else {
+                System.out.println(arg + " directory cannot be created.");
+            }
+        }
         /*
             Takes  1 or more  arguments  and creates  a directory  for each 
             argument. Each argument can be: 
@@ -197,6 +204,7 @@ public class Terminal{
     public void exit()
     {
         // Quits the program
+        System.exit(0);
     }
 
     /*
