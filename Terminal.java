@@ -7,7 +7,7 @@ public class Terminal{
     static Parser parser = new Parser();
     static Scanner scanner = new Scanner(System.in);
 
-    // Implement each command in a method, for example: 
+    // MOHAMED
     public void echo()
     {
         // Takes 1 argument and prints it.
@@ -15,12 +15,14 @@ public class Terminal{
         System.out.println(args);
     }
 
+    // MOHAMED
     public void pwd()
     {
         // Takes no arguments and prints the current path.
         System.out.println(System.getProperty("user.dir"));
     }
 
+    // MOHAMED
     public void cd(String[] args)
     {
         /*
@@ -34,13 +36,14 @@ public class Terminal{
          */
     }
 
+    // MOHAMED
     public void ls()
     {
         // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically.
         // Make a case for ls - r
-
     }
-// ZIAD
+
+    // ZIAD
     public void mkdir()
     {
         // https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java
@@ -53,8 +56,8 @@ public class Terminal{
             new directory is created in the given path)
          */
     }
-// ZIAD
 
+    // ZIAD
     public void rmdir()
     {
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
@@ -101,7 +104,7 @@ public class Terminal{
         // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
     }
 
-    public void we()
+    public void wc()
     {
         /*
             Wc stands for "word count," and as the name suggests, it is mainly 
