@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public class Terminal {
-    Parser parser; 
+    
+    Parser parser;
+    static ArrayList<String> commandList = new ArrayList<String>();
 
     //Implement each command in a method, for example: 
-
     public void echo(String args)
     {
         // Takes 1 argument and prints it.
@@ -152,13 +155,7 @@ public class Terminal {
     //This method will choose the suitable command method to be called 
     public void chooseCommandAction()
     {
-
+        
+        parser.getCommandName();
     }
-
-    public static void main(String[] args)
-    {
-        System.out.println(System.getProperty("user.dir"));
-        Parser parser = new Parser();
-        parser.parse("echo this is a retarded mess");
-    } 
 }

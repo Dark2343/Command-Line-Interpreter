@@ -3,25 +3,23 @@ class Parser {
     String commandName; 
     String[] args; 
  
-    //This method will divide the input into commandName and args 
-    //where "input" is the string command entered by the user
-
+        
     public boolean parse(String input)
     {
         String[] tokens = input.split(" ");
-        System.out.println(tokens[0]);
+        commandName = tokens[0];
+        args = new String[tokens.length - 1];
+        System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
         return true;
     }
     
     public String getCommandName()
     {
-        String[] commands = {"echo", "pwd", "cd", "ls", "mkdir", "rmdir", "touch", "cp", "rm", "cat", "we", "exit"};
-        return "lol";
+        return commandName;
     }
     
     public String[] getArgs()
     {
-        String[] placeholder = {"car","bmw"};
-        return placeholder;
+        return args;
     } 
 }
