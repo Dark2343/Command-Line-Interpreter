@@ -1,14 +1,16 @@
-import java.util.ArrayList;
+import java.lang.reflect.Method;
+import java.util.Scanner;
 
-public class Terminal {
+public class Terminal{
     
-    Parser parser;
-    static ArrayList<String> commandList = new ArrayList<String>();
+    static Parser parser = new Parser();
+    static Scanner scanner = new Scanner(System.in);
 
-    //Implement each command in a method, for example: 
-    public void echo(String args)
+    // Implement each command in a method, for example: 
+    public void echo()
     {
         // Takes 1 argument and prints it.
+        String args = String.join(" ",parser.getArgs());
         System.out.println(args);
     }
 
@@ -34,11 +36,8 @@ public class Terminal {
     public void ls()
     {
         // Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically.
-    }
+        // Make a case for ls - r
 
-    public void ls_r()
-    {
-        // Takes no arguments and lists the contents of the current directory in reverse order.
     }
 
     public void mkdir()
@@ -77,11 +76,7 @@ public class Terminal {
     public void cp()
     {
         // Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
-    }
-
-    public void cp_r()
-    {
-        // Takes  2  arguments, both  are  directories  (empty  or  not)  and  copies the first directory (with all its content) into the second one
+        // Make a case for cp - r
     }
 
     public void rm()
@@ -113,23 +108,25 @@ public class Terminal {
          */
     }
 
+/*     // MIGHT NOT IMPLEMENT
     public void command1()
     {
-        /*
-            Format: command  > FileName 
-            Redirects the output of the first command to be written to a file. If the 
-            file doesn't exist, it will be created. 
-            If the file exists, its original content will be replaced. 
-            Example: echo Hello World > myFile.txt 
-            ls > file 
-         */
+        
+        Format: command  > FileName 
+        Redirects the output of the first command to be written to a file. If the 
+        file doesn't exist, it will be created. 
+        If the file exists, its original content will be replaced. 
+        Example: echo Hello World > myFile.txt 
+        ls > file 
+    
     }
 
+    // MIGHT NOT IMPLEMENT
     public void command2()
     {
         // like command 1 but appends to the file if exists
     }
-
+*/
     public void history()
     {
         /*
@@ -156,6 +153,45 @@ public class Terminal {
     public void chooseCommandAction()
     {
         
-        parser.getCommandName();
+        String command = parser.getCommandName();
+        try {
+            Method meth = this.getClass().getMethod(command);
+            meth.invoke(this);
+            
+        } catch (Exception e) {
+            System.out.println("No such command exists you idiot");
+        }
     }
+
+    public void execute()
+    {
+        String input = scanner.nextLine();
+        parser.parse(input);
+        chooseCommandAction();
+    }
+}
+
+class Parser { 
+
+    String commandName; 
+    String[] args;
+        
+    public boolean parse(String input)
+    {
+        String[] tokens = input.split(" ");
+        commandName = tokens[0];
+        args = new String[tokens.length - 1];
+        System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
+        return true;
+    }
+    
+    public String getCommandName()
+    {
+        return commandName;
+    }
+    
+    public String[] getArgs()
+    {
+        return args;
+    } 
 }
