@@ -107,7 +107,11 @@ public class Terminal{
 
     }
 
-    // ZIAD
+    /**
+     * Takes 1 or more arguments and creates a directory for each argument. Each argument can be:
+     * Directory name (in this case the new directory is created in the current directory)
+     * Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
+     */
     public void mkdir()
     {
         /*
