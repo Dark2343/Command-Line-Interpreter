@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.io.File;
@@ -90,13 +91,16 @@ public class Terminal{
     public void mkdir()
     {
         /*
-            Takes  1 or more  arguments  and creates  a directory  for each argument. Each argument can be: 
-            • Directory  name  (in  this  case  the  new  directory  is  created  in the current directory) 
+            Takes  1 or more  arguments  and creates  a directory  for each argument. Each argument can be:
+            • Directory  name  (in  this  case  the  new  directory  is  created  in the current directory)
             Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
         */
         String[] args = parser.getArgs();
         for (String arg : args){
-            if (new File(arg).mkdirs()){
+            File f = new File(arg);
+            if (f.exists()){
+                System.out.println(arg + " directory already exists.");
+            } else if (f.mkdir()){
                 System.out.println(arg + " directory created successfully.");
             } else {
                 System.out.println(arg + " directory cannot be created.");
@@ -105,18 +109,37 @@ public class Terminal{
     }
 
     // ZIAD
+    /**
+         *  Implement all these cases:
+         *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
+         *  removes all the empty directories  in the current directory.
+         *  2. rmdir takes 1 argument which is either the full path or the
+         *  relative (short) path and removes the given directory only if
+         *  it is empty.
+         */
     public void rmdir()
     {
         //https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
-        // answer 2
-        /*
-            Implement all these cases: 
-            1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and 
-            removes all the empty directories  in the current directory. 
-            • rmdir takes 1 argument which is either the full path or the 
-            relative (short) path and removes the given directory only if 
-            it is empty.
-         */
+        String[] args = parser.getArgs();
+        if (args[0].equals("*")){
+            //Delete all
+        }
+        else {
+            File folder = new File(args[0]);
+            if (folder.exists()){
+                try {
+                    if (folder.delete()){
+                        System.out.println("Deleted folder " + args[0]);
+                    } else {
+                        System.out.println("Cannot delete folder " + args[0]);
+
+                    }
+                }
+                catch (Exception e){
+                    System.out.println("Cannot remove dir. Reason:" + e.getMessage());
+                }
+            }
+        }
     }
 
     // ZIAD
