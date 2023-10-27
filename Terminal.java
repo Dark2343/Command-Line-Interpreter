@@ -2,8 +2,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Files;
+
+
 
 public class Terminal{
     
@@ -250,11 +254,55 @@ public class Terminal{
 
     /**
      * Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
-     * Arg -r
+     * add -r option to copy directories
      */
     public void cp()
     {
+        String[] args = parser.getArgs();
+        if (args[0].equals("-r")){
+            if (args.length > 3){
+                System.out.println("cp -r only accepts 2 arguments");
+                return;
+            }
 
+            Path path = Paths.get(directory.getAbsolutePath());
+            Path argPath = path.resolve(args[1]);
+            File source = argPath.toFile();
+            Path argPath2 = path.resolve(args[2]);
+            File dest = argPath2.toFile();
+            if (source.exists() && source.isDirectory()){
+                File[] contents = source.listFiles();
+                if (contents != null){
+                    // TODO: copy contents recursively
+                }
+            }
+            else {
+                System.out.println(source.getName() + " is not a directory");
+            }
+        }
+        else {
+            if (args.length > 2){
+                System.out.println("cp only accepts 2 arguments");
+                return;
+            }
+            Path path = Paths.get(directory.getAbsolutePath());
+            Path argPath = path.resolve(args[0]);
+            File source = argPath.toFile();
+            Path argPath2 = path.resolve(args[1]);
+            File dest = argPath2.toFile();
+
+            if (source.exists() && source.isFile()){
+                try {
+                    Files.copy(source.toPath(), dest.toPath());
+                    System.out.println("Copied " + source.getName() + " to " + dest.getName());
+                } catch (IOException e) {
+                    System.out.println("An error occurred.");
+                }
+            }
+            else {
+                System.out.println(source.getName() + " file doesn't exist");
+            }
+        }
     }
 
     // ZIAD
@@ -303,7 +351,9 @@ public class Terminal{
         if (parser.getArgs().length == 1) 
         {
             try {
-                File file = new File(parser.getArgs()[0]);
+                Path path = Paths.get(directory.getAbsolutePath());
+                Path argPath = path.resolve(parser.getArgs()[0]);
+                File file = argPath.toFile();
                 Scanner reader = new Scanner(file);
                 while (reader.hasNextLine()) {
                     String line = reader.nextLine();
@@ -319,8 +369,12 @@ public class Terminal{
         else if (parser.getArgs().length == 2) 
         {
             try {
-                File file1 = new File(parser.getArgs()[0]);
-                File file2 = new File(parser.getArgs()[1]);
+                Path path1 = Paths.get(directory.getAbsolutePath());
+                Path argPath1 = path1.resolve(parser.getArgs()[0]);
+                Path path2 = Paths.get(directory.getAbsolutePath());
+                Path argPath2 = path2.resolve(parser.getArgs()[1]);
+                File file1 = argPath1.toFile();
+                File file2 = argPath2.toFile();
                 Scanner reader1 = new Scanner(file1);
                 Scanner reader2 = new Scanner(file2);
                 while (reader1.hasNextLine()) {
