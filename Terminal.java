@@ -226,8 +226,7 @@ public class Terminal{
     // ZIAD
     /**
      * Takes  1 argument  which  is  either  the  full path  or  the
-     * relative (short)  path  that  ends  with  a  file  name  and  creates
-     * this file.
+     * relative (short)  path  that  ends  with  a  file  name  and  creates this file.
      */
     public void touch()
     {
@@ -309,7 +308,6 @@ public class Terminal{
 
     /**
      * Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
-     *
      */
     public void rm()
     {
@@ -360,6 +358,7 @@ public class Terminal{
                     System.out.println(line);
                 }
                 reader.close();
+                System.out.println();
             } catch (Exception e) {
                 System.out.println("File does not exist");
             }
@@ -388,6 +387,7 @@ public class Terminal{
                     System.out.println(line);
                 }
                 reader2.close();
+                System.out.println();
             } catch (Exception e) {
                 System.out.println("One of the files does not exist");
             }
@@ -445,16 +445,15 @@ public class Terminal{
         }
     }
 
-/*     // MIGHT NOT IMPLEMENT
     public void command1()
     {
         
-        Format: command  > FileName 
-        Redirects the output of the first command to be written to a file. If the 
-        file doesn't exist, it will be created. 
-        If the file exists, its original content will be replaced. 
-        Example: echo Hello World > myFile.txt 
-        ls > file 
+        // Format: command  > FileName 
+        // Redirects the output of the first command to be written to a file. If the 
+        // file doesn't exist, it will be created. 
+        // If the file exists, its original content will be replaced. 
+        // Example: echo Hello World > myFile.txt 
+        // ls > file 
     
     }
 
@@ -463,7 +462,6 @@ public class Terminal{
     {
         // like command 1 but appends to the file if exists
     }
-*/
 
     // MOHAMED
     /**
