@@ -2,6 +2,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +24,17 @@ public class Terminal{
     public void echo()
     {
         String args = String.join(" ", parser.getArgs());
-        System.out.println(args);
+        if (parser.saveFile() == 0) {
+            System.out.println(args);
+        }
+
+        else if (parser.saveFile() == 1) {
+            parser.writeToFile();
+        }
+        
+        else if (parser.saveFile() == 2) {
+            parser.appendToFile();
+        }
     }
 
     // MOHAMED
@@ -445,24 +456,6 @@ public class Terminal{
         }
     }
 
-    public void command1()
-    {
-        
-        // Format: command  > FileName 
-        // Redirects the output of the first command to be written to a file. If the 
-        // file doesn't exist, it will be created. 
-        // If the file exists, its original content will be replaced. 
-        // Example: echo Hello World > myFile.txt 
-        // ls > file 
-    
-    }
-
-    // MIGHT NOT IMPLEMENT
-    public void command2()
-    {
-        // like command 1 but appends to the file if exists
-    }
-
     // MOHAMED
     /**
      * Takes no parameters and displays an enumerated list with the commands you've used in the past 
@@ -527,13 +520,32 @@ class Parser {
 
     String commandName; 
     String[] args;
+    Boolean arrow = false, doubleArrow = false;
+    String fileName;
         
     public void parse(String input)
     {
         String[] tokens = input.split(" ");
         commandName = tokens[0];
-        args = new String[tokens.length - 1];
-        System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
+        
+        if (tokens.length > 2 && tokens[tokens.length - 2].equals(">")) {    
+            arrow = true; doubleArrow = false;
+            fileName = tokens[tokens.length - 1];
+            args = new String[tokens.length - 3];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
+        }
+        else if (tokens.length > 2 && tokens[tokens.length - 2].equals(">>")) {
+            arrow = false; doubleArrow = true;
+            fileName = tokens[tokens.length - 1];
+            args = new String[tokens.length - 3];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
+        }
+        else{
+            arrow = false; doubleArrow = false;
+            args = new String[tokens.length - 1];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
+        }
+        
     }
     
     public String getCommandName()
@@ -544,5 +556,65 @@ class Parser {
     public String[] getArgs()
     {
         return args;
-    } 
+    }
+
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+    public int saveFile()
+    {
+        if (arrow) {
+            return 1;
+        }
+        else if (doubleArrow)
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public void writeToFile()
+    {
+        try{
+            File textFile = new File(this.getFileName());
+            FileWriter text = new FileWriter(textFile);
+            String content = String.join(" ", this.args);
+            text.write(content + "\n");
+            text.close();
+            if (textFile.createNewFile()) {
+                System.out.println("New file " + fileName + " created with given input");
+                System.out.println();
+            }
+            else{
+                System.out.println(fileName + " successfully overwritten");
+                System.out.println();
+            }
+        }
+        catch (Exception e){
+            System.out.println("An error has occurred");
+            System.out.println();
+        }
+    }
+    
+    public void appendToFile()
+    {
+        try{
+            File textFile = new File(this.getFileName());
+            FileWriter text = new FileWriter(textFile, true);
+            String content = String.join(" ", this.args);
+            text.write(content + "\n");
+            text.close();
+            System.out.println("Input appended to " + fileName);
+            System.out.println();
+        }
+        catch (Exception e){
+            System.out.println("An error has occurred");
+            System.out.println();
+        }
+    }
 }
