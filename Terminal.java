@@ -30,18 +30,12 @@ public class Terminal{
         else if (parser.saveFile() == 1) {
             try{
                 File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
+
                 FileWriter text = new FileWriter(textFile);
                 String content = String.join(" ", parser.args);
                 text.write(content + "\n");
                 text.close();
-            if (textFile.createNewFile()) {
-                    System.out.println("New file " + parser.getFileName() + " created with given input");
-                    System.out.println();
-                }
-                else{
-                    System.out.println(parser.getFileName() + " successfully overwritten");
-                    System.out.println();
-                }
             }
             catch (Exception e){
                 System.out.println("An error has occurred");
@@ -79,18 +73,12 @@ public class Terminal{
         else if (parser.saveFile() == 1) {
             try{
                 File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
+
                 FileWriter text = new FileWriter(textFile);
                 String content = directory.getAbsolutePath();
                 text.write(content + "\n");
                 text.close();
-            if (textFile.createNewFile()) {
-                    System.out.println("New file " + parser.getFileName() + " created with given input");
-                    System.out.println();
-                }
-                else{
-                    System.out.println(parser.getFileName() + " successfully overwritten");
-                    System.out.println();
-                }
             }
             catch (Exception e){
                 System.out.println("An error has occurred");
@@ -215,6 +203,8 @@ public class Terminal{
         else if (parser.saveFile() == 1) {
             try{
                 File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
+
                 FileWriter text = new FileWriter(textFile);
                 String content = "";
                 
@@ -223,14 +213,13 @@ public class Terminal{
                     for(File e : contents)
                     {
                         if (e.isFile()) {
-                        content = "<FILE> " + e.getName();
+                            content = "<FILE> " + e.getName();
                         }
                         else if (e.isDirectory()) {
                             content = "<DIR> " + e.getName();
                         }
                         text.write(content + "\n");
                     }
-                    System.out.println();
                 }
                 
                 else if (parser.getArgs()[0].equals("-r"))
@@ -247,7 +236,6 @@ public class Terminal{
                         }
                         text.write(content + "\n");
                     }
-                    System.out.println();
                 }
             
                 else
@@ -256,14 +244,6 @@ public class Terminal{
                     System.out.println();
                 }
                 text.close();
-            if (textFile.createNewFile()) {
-                    System.out.println("New file " + parser.getFileName() + " created with given input");
-                    System.out.println();
-                }
-                else{
-                    System.out.println(parser.getFileName() + " successfully overwritten");
-                    System.out.println();
-                }
             }
             catch (Exception e){
                 System.out.println("An error has occurred");
@@ -281,14 +261,13 @@ public class Terminal{
                     for(File e : contents)
                     {
                         if (e.isFile()) {
-                        content = "<FILE> " + e.getName();
+                            content = "<FILE> " + e.getName();
                         }
                         else if (e.isDirectory()) {
                             content = "<DIR> " + e.getName();
                         }
                         text.write(content + "\n");
                     }
-                    System.out.println();
                 }
                 
                 else if (parser.getArgs()[0].equals("-r"))
@@ -305,7 +284,6 @@ public class Terminal{
                         }
                         text.write(content + "\n");
                     }
-                    System.out.println();
                 }
             
                 else
@@ -635,23 +613,17 @@ public class Terminal{
             else if (parser.saveFile() == 1) {
                 try{
                     File textFile = new File(parser.getFileName());
+                    fileCheck(textFile);
+
                     FileWriter text = new FileWriter(textFile);
                     String content = lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0];
                     text.write(content + "\n");
                     text.close();
-                    if (textFile.createNewFile()) {
-                            System.out.println("New file " + parser.getFileName() + " created with given input");
-                            System.out.println();
-                        }
-                        else{
-                            System.out.println(parser.getFileName() + " successfully overwritten");
-                            System.out.println();
-                        }
-                    }
-                    catch (Exception e){
-                        System.out.println("An error has occurred");
-                        System.out.println();
-                    }
+                }
+                catch (Exception e){
+                    System.out.println("An error has occurred");
+                    System.out.println();
+                }
             }
             else if (parser.saveFile() == 2) {
                 try{
@@ -690,8 +662,9 @@ public class Terminal{
             {
                 for(int i = 0; i < commandHistory.size(); i++)
                 {
-                    System.out.println((i + 1) + "   " + commandHistory.get(i));
+                    System.out.println((i + 1) + " - " + commandHistory.get(i));
                 }
+                System.out.println();
             }
             else
             {
@@ -704,23 +677,17 @@ public class Terminal{
             {
                 try{
                     File textFile = new File(parser.getFileName());
+                    fileCheck(textFile);
+
                     FileWriter text = new FileWriter(textFile);
                     String content;
                     
                     for(int i = 0; i < commandHistory.size(); i++)
                     {
-                        content = (i + 1) + "   " + commandHistory.get(i) + "\n";
+                        content = (i + 1) + " - " + commandHistory.get(i) + "\n";
                         text.write(content + "\n");
                     }
                     text.close();
-                if (textFile.createNewFile()) {
-                        System.out.println("New file " + parser.getFileName() + " created with given input");
-                        System.out.println();
-                    }
-                    else{
-                        System.out.println(parser.getFileName() + " successfully overwritten");
-                        System.out.println();
-                    }
                 }
                 catch (Exception e){
                     System.out.println("An error has occurred");
@@ -743,7 +710,7 @@ public class Terminal{
                     
                     for(int i = 0; i < commandHistory.size(); i++)
                     {
-                        content = (i + 1) + "   " + commandHistory.get(i) + "\n";
+                        content = (i + 1) + " - " + commandHistory.get(i) + "\n";
                         text.write(content + "\n");
                     }
                     text.close();
@@ -796,6 +763,17 @@ public class Terminal{
         commandHistory.add(input);
         parser.parse(input);
         chooseCommandAction();
+    }
+
+    public void fileCheck(File textFile){
+        try{
+            fileCheck(textFile);
+
+        }
+        catch (Exception e){
+            System.out.println("A file error has occurred");
+            System.out.println();
+        }
     }
 }
 
