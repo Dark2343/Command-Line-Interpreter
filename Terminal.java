@@ -258,6 +258,8 @@ public class Terminal{
     public void cp()
     {
         String[] args = parser.getArgs();
+
+        // Copy directory
         if (args[0].equals("-r")){
             if (args.length > 3){
                 System.out.println("cp -r only accepts 2 arguments");
@@ -279,6 +281,7 @@ public class Terminal{
                 System.out.println(source.getName() + " is not a directory");
             }
         }
+        // Copy file
         else {
             if (args.length > 2){
                 System.out.println("cp only accepts 2 arguments");
