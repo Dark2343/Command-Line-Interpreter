@@ -2,6 +2,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +24,39 @@ public class Terminal{
     public void echo()
     {
         String args = String.join(" ", parser.getArgs());
-        System.out.println(args);
+        if (parser.saveFile() == 0) {
+            System.out.println(args);
+        }
+        else if (parser.saveFile() == 1) {
+            try{
+                File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
+
+                FileWriter text = new FileWriter(textFile);
+                String content = String.join(" ", parser.args);
+                text.write(content + "\n");
+                text.close();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
+        }
+        else if (parser.saveFile() == 2) {
+            try{
+                File textFile = new File(parser.getFileName());
+                FileWriter text = new FileWriter(textFile, true);
+                String content = String.join(" ", parser.args);
+                text.write(content + "\n");
+                text.close();
+                System.out.println("Input appended to " + parser.getFileName());
+                System.out.println();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
+        }
     }
 
     // MOHAMED
@@ -33,8 +66,40 @@ public class Terminal{
      */
     public void pwd()
     {
-        System.out.println("Current path: " + directory.getAbsolutePath());
-        System.out.println();
+        if (parser.saveFile() == 0) {
+            System.out.println("Current path: " + directory.getAbsolutePath());
+            System.out.println();
+        }
+        else if (parser.saveFile() == 1) {
+            try{
+                File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
+
+                FileWriter text = new FileWriter(textFile);
+                String content = directory.getAbsolutePath();
+                text.write(content + "\n");
+                text.close();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
+        }
+        else if (parser.saveFile() == 2) {
+            try{
+                File textFile = new File(parser.getFileName());
+                FileWriter text = new FileWriter(textFile, true);
+                String content = directory.getAbsolutePath();
+                text.write(content + "\n");
+                text.close();
+                System.out.println("Input appended to " + parser.getFileName());
+                System.out.println();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
+        }
     }
 
     // MOHAMED
@@ -97,40 +162,143 @@ public class Terminal{
     {
         File[] contents = directory.listFiles();
         
-        if (parser.getArgs().length == 0) 
-        {
-            for(File e : contents)
+        if (parser.saveFile() == 0) {
+            
+            if (parser.getArgs().length == 0) 
             {
-                if (e.isFile()) {
-                    System.out.println("<FILE> " + e.getName());
+                for(File e : contents)
+                {
+                    if (e.isFile()) {
+                        System.out.println("<FILE> " + e.getName());
+                    }
+                    else if (e.isDirectory()) {
+                        System.out.println("<DIR> " + e.getName());
+                    }
                 }
-                else if (e.isDirectory()) {
-                    System.out.println("<DIR> " + e.getName());
-                }
+                System.out.println();
             }
-            System.out.println();
-        }
         
-        else if (parser.getArgs()[0].equals("-r"))
-        {
-            for(int i = contents.length - 1; i >= 0; i--)
+            else if (parser.getArgs()[0].equals("-r"))
             {
-                File e = contents[i];
-                
-                if (e.isFile()) {
-                    System.out.println("<FILE> " + e.getName());
+                for(int i = contents.length - 1; i >= 0; i--)
+                {
+                    File e = contents[i];
+                    
+                    if (e.isFile()) {
+                        System.out.println("<FILE> " + e.getName());
+                    }
+                    else if (e.isDirectory()) {
+                        System.out.println("<DIR> " + e.getName());
+                    }
                 }
-                else if (e.isDirectory()) {
-                    System.out.println("<DIR> " + e.getName());
-                }
+                System.out.println();
             }
-            System.out.println();
+        
+            else
+            {
+                System.out.println("This command takes no arguments");
+                System.out.println();
+            }
         }
+        else if (parser.saveFile() == 1) {
+            try{
+                File textFile = new File(parser.getFileName());
+                fileCheck(textFile);
 
-        else
-        {
-            System.out.println("This command takes no arguments");
-            System.out.println();
+                FileWriter text = new FileWriter(textFile);
+                String content = "";
+                
+                if (parser.getArgs().length == 0) 
+                {
+                    for(File e : contents)
+                    {
+                        if (e.isFile()) {
+                            content = "<FILE> " + e.getName();
+                        }
+                        else if (e.isDirectory()) {
+                            content = "<DIR> " + e.getName();
+                        }
+                        text.write(content + "\n");
+                    }
+                }
+                
+                else if (parser.getArgs()[0].equals("-r"))
+                {
+                    for(int i = contents.length - 1; i >= 0; i--)
+                    {
+                        File e = contents[i];
+                        
+                        if (e.isFile()) {
+                            content = "<FILE> " + e.getName();
+                        }
+                        else if (e.isDirectory()) {
+                            content = "<DIR> " + e.getName();
+                        }
+                        text.write(content + "\n");
+                    }
+                }
+            
+                else
+                {
+                    System.out.println("This command takes no arguments");
+                    System.out.println();
+                }
+                text.close();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
+        }
+        else if (parser.saveFile() == 2) {
+            try{
+                File textFile = new File(parser.getFileName());
+                FileWriter text = new FileWriter(textFile, true);
+                String content = "";
+                
+                if (parser.getArgs().length == 0) 
+                {
+                    for(File e : contents)
+                    {
+                        if (e.isFile()) {
+                            content = "<FILE> " + e.getName();
+                        }
+                        else if (e.isDirectory()) {
+                            content = "<DIR> " + e.getName();
+                        }
+                        text.write(content + "\n");
+                    }
+                }
+                
+                else if (parser.getArgs()[0].equals("-r"))
+                {
+                    for(int i = contents.length - 1; i >= 0; i--)
+                    {
+                        File e = contents[i];
+                        
+                        if (e.isFile()) {
+                            content = "<FILE> " + e.getName();
+                        }
+                        else if (e.isDirectory()) {
+                            content = "<DIR> " + e.getName();
+                        }
+                        text.write(content + "\n");
+                    }
+                }
+            
+                else
+                {
+                    System.out.println("This command takes no arguments");
+                    System.out.println();
+                }
+                text.close();
+                System.out.println("Input appended to " + parser.getFileName());
+                System.out.println();
+            }
+            catch (Exception e){
+                System.out.println("An error has occurred");
+                System.out.println();
+            }
         }
 
     }
@@ -442,28 +610,43 @@ public class Terminal{
             }
             reader.close();
 
-            System.out.println(lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0]);
+            if (parser.saveFile() == 0) {
+                System.out.println(lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0]);
+            }
+            else if (parser.saveFile() == 1) {
+                try{
+                    File textFile = new File(parser.getFileName());
+                    fileCheck(textFile);
+
+                    FileWriter text = new FileWriter(textFile);
+                    String content = lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0];
+                    text.write(content + "\n");
+                    text.close();
+                }
+                catch (Exception e){
+                    System.out.println("An error has occurred");
+                    System.out.println();
+                }
+            }
+            else if (parser.saveFile() == 2) {
+                try{
+                    File textFile = new File(parser.getFileName());
+                    FileWriter text = new FileWriter(textFile, true);
+                    String content = lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0];
+                    text.write(content + "\n");
+                    text.close();
+                    System.out.println("Input appended to " + parser.getFileName());
+                    System.out.println();
+                }
+                catch (Exception e){
+                    System.out.println("An error has occurred");
+                    System.out.println();
+                }
+            }
+
         } catch (Exception e) {
             System.out.println("File does not exist");
         }
-    }
-
-    public void command1()
-    {
-        
-        // Format: command  > FileName 
-        // Redirects the output of the first command to be written to a file. If the 
-        // file doesn't exist, it will be created. 
-        // If the file exists, its original content will be replaced. 
-        // Example: echo Hello World > myFile.txt 
-        // ls > file 
-    
-    }
-
-    // MIGHT NOT IMPLEMENT
-    public void command2()
-    {
-        // like command 1 but appends to the file if exists
     }
 
     // MOHAMED
@@ -477,16 +660,76 @@ public class Terminal{
      */
     public void history()
     {
-        if (commandHistory.size() != 0)
-        {
-            for(int i = 0; i < commandHistory.size(); i++)
+        if (parser.saveFile() == 0) {
+            if (commandHistory.size() != 0)
             {
-                System.out.println((i + 1) + "   " + commandHistory.get(i));
+                for(int i = 0; i < commandHistory.size(); i++)
+                {
+                    System.out.println((i + 1) + " - " + commandHistory.get(i));
+                }
+                System.out.println();
+            }
+            else
+            {
+                System.out.println("No commands were inputted yet");
+                System.out.println();
             }
         }
-        else
-        {
-            System.out.println("No commands were inputted yet");
+        else if (parser.saveFile() == 1) {
+            if (commandHistory.size() != 0)
+            {
+                try{
+                    File textFile = new File(parser.getFileName());
+                    fileCheck(textFile);
+
+                    FileWriter text = new FileWriter(textFile);
+                    String content;
+                    
+                    for(int i = 0; i < commandHistory.size(); i++)
+                    {
+                        content = (i + 1) + " - " + commandHistory.get(i) + "\n";
+                        text.write(content + "\n");
+                    }
+                    text.close();
+                }
+                catch (Exception e){
+                    System.out.println("An error has occurred");
+                    System.out.println();
+                }
+            }
+            else
+            {
+                System.out.println("No commands were inputted yet");
+                System.out.println();
+            }
+        }
+        else if (parser.saveFile() == 2) {
+            if (commandHistory.size() != 0)
+            {
+                try{
+                    File textFile = new File(parser.getFileName());
+                    FileWriter text = new FileWriter(textFile, true);
+                    String content;
+                    
+                    for(int i = 0; i < commandHistory.size(); i++)
+                    {
+                        content = (i + 1) + " - " + commandHistory.get(i) + "\n";
+                        text.write(content + "\n");
+                    }
+                    text.close();
+                    System.out.println("Input appended to " + parser.getFileName());
+                    System.out.println();
+                }
+                catch (Exception e){
+                    System.out.println("An error has occurred");
+                    System.out.println();
+                }
+            }
+            else
+            {
+                System.out.println("No commands were inputted yet");
+                System.out.println();
+            }
         }
     }
 
@@ -524,19 +767,49 @@ public class Terminal{
         parser.parse(input);
         chooseCommandAction();
     }
+
+    public void fileCheck(File textFile){
+        try{
+            fileCheck(textFile);
+
+        }
+        catch (Exception e){
+            System.out.println("A file error has occurred");
+            System.out.println();
+        }
+    }
 }
 
 class Parser { 
 
     String commandName; 
     String[] args;
+    Boolean arrow = false, doubleArrow = false;
+    String fileName;
         
     public void parse(String input)
     {
         String[] tokens = input.split(" ");
         commandName = tokens[0];
-        args = new String[tokens.length - 1];
-        System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
+        
+        if (tokens.length > 2 && tokens[tokens.length - 2].equals(">")) {    
+            arrow = true; doubleArrow = false;
+            fileName = tokens[tokens.length - 1];
+            args = new String[tokens.length - 3];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
+        }
+        else if (tokens.length > 2 && tokens[tokens.length - 2].equals(">>")) {
+            arrow = false; doubleArrow = true;
+            fileName = tokens[tokens.length - 1];
+            args = new String[tokens.length - 3];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
+        }
+        else{
+            arrow = false; doubleArrow = false;
+            args = new String[tokens.length - 1];
+            System.arraycopy(tokens, 1, args, 0, tokens.length - 1);
+        }
+        
     }
     
     public String getCommandName()
@@ -547,5 +820,25 @@ class Parser {
     public String[] getArgs()
     {
         return args;
-    } 
+    }
+
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+    public int saveFile()
+    {
+        if (arrow) {
+            return 1;
+        }
+        else if (doubleArrow)
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }
