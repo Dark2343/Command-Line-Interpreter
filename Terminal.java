@@ -8,30 +8,37 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
-
-
 public class Terminal{
-    
+
     static Parser parser = new Parser();
     static Scanner scanner = new Scanner(System.in);
+    
+    // Creates a new directory with default start at the current user's folder 
     static File directory = new File(System.getProperty("user.dir"));
+    
+    // Saves every input the user has entered to show later
     static ArrayList<String> commandHistory = new ArrayList<String>();
 
-    // MOHAMED
-    /**
-     * Takes 1 argument and prints it.
-     */
+    // echo takes 1 or more arguments and prints them to the screen.
     public void echo()
     {
+        // Turns the arg array into a string and puts spaces between them
         String args = String.join(" ", parser.getArgs());
+
+        // Checks if the user would like to save the file
+        // 0 = no, 1 = overwrite, 2 = append
         if (parser.saveFile() == 0) {
             System.out.println(args);
         }
         else if (parser.saveFile() == 1) {
             try{
+                // Creates a new file with the name the user entered
                 File textFile = new File(parser.getFileName());
+                
+                // Checks if the file exists
                 fileCheck(textFile);
 
+                // Writes the string to the file
                 FileWriter text = new FileWriter(textFile);
                 String content = String.join(" ", parser.args);
                 text.write(content + "\n");
@@ -44,7 +51,10 @@ public class Terminal{
         }
         else if (parser.saveFile() == 2) {
             try{
+                // Creates a new file with the name the user entered
                 File textFile = new File(parser.getFileName());
+
+                // Checks if the file exists and sets the FileWriter to append
                 FileWriter text = new FileWriter(textFile, true);
                 String content = String.join(" ", parser.args);
                 text.write(content + "\n");
@@ -59,14 +69,12 @@ public class Terminal{
         }
     }
 
-    // MOHAMED
     
-    /**
-     * Takes no arguments and prints the current path.
-     */
+    // pwd takes no arguments and prints the current path.
     public void pwd()
     {
         if (parser.saveFile() == 0) {
+            // Prints the current path
             System.out.println("Current path: " + directory.getAbsolutePath());
             System.out.println();
         }
@@ -102,42 +110,43 @@ public class Terminal{
         }
     }
 
-    // MOHAMED
-    /**
-     * Implement all these cases: 
-     * 1. cd takes no arguments and changes the current path to the path of your home directory. 
-     * 2. cd takes 1 argument which is ".." (e.g. cd ..) and changes the current directory to the previous directory. 
-     * 3. cd  takes  1  argument  which  is  either  the  full  path  or  the relative (short) path and changes the current path to that path.
-     */
+    // cd takes 1 argument which is either the full path or the relative (short) path and changes the current directory to the given path.
+    // cd .. changes the current directory to the parent directory.
+    // cd with no arguments changes the current directory to the user's home directory.
+    // If the path is invalid, the program should print some error messages without terminating.
     public void cd()
     {
         // Case 1
         if (parser.getArgs().length == 0)
         {
+            // Changes the directory to the user's home directory
             directory = new File(System.getProperty("user.home"));
             System.out.println("Current path: " + directory.getAbsolutePath());
             System.out.println();
-        }
-        
+        }    
         // Case 2
         else if (parser.getArgs()[0].equals(".."))
         {
+            // Changes the directory to the parent directory
             directory = new File(directory.getParent());
             System.out.println("Current path: " + directory.getAbsolutePath());
             System.out.println();
         }
-        
         // Case 3
         else
         {
+            // Turns the arg array into a string and puts spaces between them
             String args = String.join(" ", parser.getArgs());
             
             try {
+                // Changes the directory to the given path, the path is relative to the current directory
                 Path path = Paths.get(directory.getAbsolutePath());
                 Path argPath = path.resolve(args);
                 
+                // Checks if the path exists
                 if (argPath.toFile().exists()) 
                 {
+                    // Changes the directory to the given path
                     directory = new File(argPath.toString());
                     System.out.println("Current path: " + directory.getAbsolutePath());
                     System.out.println();
@@ -154,20 +163,21 @@ public class Terminal{
         }
     }
     
-    // MOHAMED
-    /**
-     * Takes  no  arguments  and  lists  the  contents  of  the  current  directory sorted alphabetically. (Reverse for ls -r)
-     */
+    // ls takes 0 or 1 argument. If it takes no arguments, it prints the contents of the current directory. 
+    // If it takes 1 argument, it must be -r and it prints the contents of the current directory in reverse order.
     public void ls()
     {
+        // Gets the contents of the current directory
         File[] contents = directory.listFiles();
         
         if (parser.saveFile() == 0) {
             
             if (parser.getArgs().length == 0) 
             {
+                // Prints the contents of the current directory
                 for(File e : contents)
                 {
+                    // Checks if the file is a file or a directory
                     if (e.isFile()) {
                         System.out.println("<FILE> " + e.getName());
                     }
@@ -177,9 +187,10 @@ public class Terminal{
                 }
                 System.out.println();
             }
-        
+            // Prints the contents of the current directory in reverse order
             else if (parser.getArgs()[0].equals("-r"))
             {
+                // Prints the contents of the current directory in reverse order
                 for(int i = contents.length - 1; i >= 0; i--)
                 {
                     File e = contents[i];
@@ -193,13 +204,13 @@ public class Terminal{
                 }
                 System.out.println();
             }
-        
             else
             {
                 System.out.println("This command takes no arguments");
                 System.out.println();
             }
         }
+        // Saves the output to a file
         else if (parser.saveFile() == 1) {
             try{
                 File textFile = new File(parser.getFileName());
@@ -208,6 +219,7 @@ public class Terminal{
                 FileWriter text = new FileWriter(textFile);
                 String content = "";
                 
+                // Prints the contents of the current directory
                 if (parser.getArgs().length == 0) 
                 {
                     for(File e : contents)
@@ -220,8 +232,7 @@ public class Terminal{
                         }
                         text.write(content + "\n");
                     }
-                }
-                
+                }        
                 else if (parser.getArgs()[0].equals("-r"))
                 {
                     for(int i = contents.length - 1; i >= 0; i--)
@@ -236,8 +247,7 @@ public class Terminal{
                         }
                         text.write(content + "\n");
                     }
-                }
-            
+                }    
                 else
                 {
                     System.out.println("This command takes no arguments");
@@ -250,6 +260,7 @@ public class Terminal{
                 System.out.println();
             }
         }
+        // Appends the output to a file
         else if (parser.saveFile() == 2) {
             try{
                 File textFile = new File(parser.getFileName());
@@ -269,7 +280,6 @@ public class Terminal{
                         text.write(content + "\n");
                     }
                 }
-                
                 else if (parser.getArgs()[0].equals("-r"))
                 {
                     for(int i = contents.length - 1; i >= 0; i--)
@@ -285,7 +295,6 @@ public class Terminal{
                         text.write(content + "\n");
                     }
                 }
-            
                 else
                 {
                     System.out.println("This command takes no arguments");
@@ -303,16 +312,16 @@ public class Terminal{
 
     }
 
-    // ZIAD
-    /**
-     * Takes 1 or more arguments and creates a directory for each argument. Each argument can be:
-     * Directory name (in this case the new directory is created in the current directory)
-     * Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
-     */
+    // Takes 1 or more arguments and creates a directory for each argument. Each argument can be:
+    // Directory name (in this case the new directory is created in the current directory)
+    // Path (full/short) that ends with a directory name (in this case the new directory is created in the given path)
     public void mkdir()
     {
+        // Gets the folder name from the arguments
         String[] args = parser.getArgs();
+        // Creates the folder
         Path path = Paths.get(directory.getAbsolutePath());
+        // Creates the folder, if it already exists, it prints an error message
         for (String arg : args){
             Path argPath = path.resolve(arg);
             File f = argPath.toFile();
@@ -325,16 +334,10 @@ public class Terminal{
             }
         }
     }
-
-    // ZIAD
-    /**
-     *  Implement all these cases:
-     *  1.  rmdir  takes  1  argument  which  is  "*"  (e.g.  rmdir  *)  and
-     *  removes all the empty directories  in the current directory.
-     *  2. rmdir takes 1 argument which is either the full path or the
-     *  relative (short) path and removes the given directory only if
-     *  it is empty.
-     */
+    
+    // Implement all these cases:
+    // 1. rmdir takes 1 argument which is "*" (e.g. rmdir *) and removes all the empty directories in the current directory.
+    // 2. rmdir takes 1 argument which is either the full path or the relative (short) path and removes the given directory only if it is empty.
     public void rmdir()
     {
         // Gets the folder name from the arguments
@@ -346,8 +349,10 @@ public class Terminal{
 
         // Case 1: rmdir *
         if (args[0].equals("*")){
+            // Gets the contents of the current directory
             File[] contents = directory.listFiles();
 
+            // Deletes all the empty directories in the current directory
             if (contents != null){
                 for (File file : contents) {
                     if (file.isDirectory()){
@@ -365,10 +370,12 @@ public class Terminal{
         }
         // Case 2: rmdir <folder>
         else {
+            // Gets the folder name from the arguments
             Path path = Paths.get(directory.getAbsolutePath());
             Path argPath = path.resolve(args[0]);
             File folder = argPath.toFile();
 
+            // Deletes the folder if it is empty
             String folderName = folder.getName();
             if (folder.exists() && folder.isDirectory()) {
                 try {
@@ -390,21 +397,20 @@ public class Terminal{
 
         }
     }
-    
-    // ZIAD
-    /**
-     * Takes  1 argument  which  is  either  the  full path  or  the
-     * relative (short)  path  that  ends  with  a  file  name  and  creates this file.
-     */
+
+    // Takes 1 argument which is either the full path or the relative (short) path that ends with a file name and creates this file.
     public void touch()
     {
+        // Gets the file name from the arguments
         String[] args = parser.getArgs();
         Path path = Paths.get(directory.getAbsolutePath());
         Path argPath = path.resolve(args[0]);
         File f = argPath.toFile();
+        // Creates the file, if it already exists, it prints an error message
         if (f.exists()){
             System.out.println(args[0] + " file already exists.");
-        } else {
+        } 
+        else {
             try {
                 if (f.createNewFile()){
                     System.out.println(args[0] + " file created successfully.");
@@ -416,70 +422,39 @@ public class Terminal{
             }
         }
     }
-    
-    // ZIAD
 
-    /**
-     * Takes  2  arguments,  both  are  files  and  copies  the  first  onto  the second
-     * add -r option to copy directories
-     */
+    // Takes 2 arguments, both are files and copies the first onto the second.
     public void cp()
     {
         String[] args = parser.getArgs();
 
-        // Copy directory
-        if (args[0].equals("-r")){
-            if (args.length > 3){
-                System.out.println("cp -r only accepts 2 arguments");
-                return;
-            }
+        // Checks if the user entered more than 2 arguments
+        if (args.length > 2){
+            System.out.println("cp only accepts 2 arguments");
+            return;
+        }
+        // Gets the file name from the arguments
+        Path path = Paths.get(directory.getAbsolutePath());
+        Path argPath = path.resolve(args[0]);
+        File source = argPath.toFile();
+        Path argPath2 = path.resolve(args[1]);
+        File dest = argPath2.toFile();
 
-            Path path = Paths.get(directory.getAbsolutePath());
-            Path argPath = path.resolve(args[1]);
-            File source = argPath.toFile();
-            Path argPath2 = path.resolve(args[2]);
-            File dest = argPath2.toFile();
-            if (source.exists() && source.isDirectory()){
-                File[] contents = source.listFiles();
-                if (contents != null){
-                    // TODO: copy contents recursively
-                }
-            }
-            else {
-                System.out.println(source.getName() + " is not a directory");
+        // Copies the file
+        if (source.exists() && source.isFile()){
+            try {
+                Files.copy(source.toPath(), dest.toPath());
+                System.out.println("Copied " + source.getName() + " to " + dest.getName());
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
             }
         }
-        // Copy file
         else {
-            if (args.length > 2){
-                System.out.println("cp only accepts 2 arguments");
-                return;
-            }
-            Path path = Paths.get(directory.getAbsolutePath());
-            Path argPath = path.resolve(args[0]);
-            File source = argPath.toFile();
-            Path argPath2 = path.resolve(args[1]);
-            File dest = argPath2.toFile();
-
-            if (source.exists() && source.isFile()){
-                try {
-                    Files.copy(source.toPath(), dest.toPath());
-                    System.out.println("Copied " + source.getName() + " to " + dest.getName());
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                }
-            }
-            else {
-                System.out.println(source.getName() + " file doesn't exist");
-            }
+            System.out.println(source.getName() + " file doesn't exist");
         }
     }
 
-    // ZIAD
-
-    /**
-     * Takes  1  argument  which  is  a  file  name  that  exists  in  the  current directory and removes this file.
-     */
+    // Takes 1 argument which is a file name that exists in the current directory and removes this file.
     public void rm()
     {
         // Gets the file name from the arguments
@@ -488,11 +463,13 @@ public class Terminal{
             System.out.println("rm only accepts 1 argument");
             return;
         }
-
+        // Gets the file name from the arguments
         Path path = Paths.get(directory.getAbsolutePath());
         Path argPath = path.resolve(args[0]);
         File file = argPath.toFile();
-         if (file.exists() && file.isFile()){
+        
+        // Deletes the file if it exists
+        if (file.exists() && file.isFile()){
             try {
                 if (file.delete()){
                     System.out.println("Deleted file " + file.getName());
@@ -510,20 +487,19 @@ public class Terminal{
 
     }
     
-    // MOHAMED
-    /**
-     * Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
-     */
+    // Takes 1 argument and prints the file's content or takes 2 arguments and concatenates the content of the 2 files and prints it.
     public void cat()
     {
         // 1 File
         if (parser.getArgs().length == 1) 
         {
             try {
+                // Gets the file name from the arguments
                 Path path = Paths.get(directory.getAbsolutePath());
                 Path argPath = path.resolve(parser.getArgs()[0]);
                 File file = argPath.toFile();
                 Scanner reader = new Scanner(file);
+                // Prints the file's content
                 while (reader.hasNextLine()) {
                     String line = reader.nextLine();
                     System.out.println(line);
@@ -534,11 +510,11 @@ public class Terminal{
                 System.out.println("File does not exist");
             }
         }
-        
         // 2 Files
         else if (parser.getArgs().length == 2) 
         {
             try {
+                // Gets the file name from the arguments
                 Path path1 = Paths.get(directory.getAbsolutePath());
                 Path argPath1 = path1.resolve(parser.getArgs()[0]);
                 Path path2 = Paths.get(directory.getAbsolutePath());
@@ -547,12 +523,13 @@ public class Terminal{
                 File file2 = argPath2.toFile();
                 Scanner reader1 = new Scanner(file1);
                 Scanner reader2 = new Scanner(file2);
+                // Prints the first file's content
                 while (reader1.hasNextLine()) {
                     String line = reader1.nextLine();
                     System.out.println(line);
                 }
                 reader1.close();
-                
+                // Prints the second file's content
                 while (reader2.hasNextLine()) {
                     String line = reader2.nextLine();
                     System.out.println(line);
@@ -563,13 +540,11 @@ public class Terminal{
                 System.out.println("One of the files does not exist");
             }
         }
-        
         // More than 2 files
         else if (parser.getArgs().length > 2) 
         {
             System.out.println("1 or 2 files only allowed");
         }
-
         // No files
         else
         {
@@ -578,25 +553,20 @@ public class Terminal{
         
     }
     
-    // MOHAMED
-    /**
-     * Wc stands for "word count," and as the name suggests, it is mainly used for counting purpose. By default, it displays four-columnar output. 
-     * First column shows number of lines present in a file specified, 
-     * second column shows number of words present in the file, 
-     * third column shows number of characters present in file,
-     * fourth column itself is the file name which are given as argument 
-     * Example: wc file.txt 
-     * Output: 9 79 483 file.txt 
-     * Explanation: 
-     * # 9 lines, 79 word, 483 character with spaces, file name
-     */
+    // Displays four-columnar output. 
+    // 1st column shows number of lines present in a file specified, 
+    // 2nd column shows number of words present in the file, 
+    // 3rd column shows number of characters present in file,
+    // 4th column itself is the file name which are given as argument 
     public void wc()
     {
         try {
+            // Gets the file name from the arguments
             int lineNum = 0, wordNum = 0, characterNum = 0;
             File file = new File(parser.getArgs()[0]);
             Scanner reader = new Scanner(file);
             
+            // Counts the lines, words, and characters
             while (reader.hasNextLine()) 
             {
                 lineNum++;
@@ -610,9 +580,11 @@ public class Terminal{
             }
             reader.close();
 
+            // Checks if the user would like to save the file
             if (parser.saveFile() == 0) {
                 System.out.println(lineNum + " " + wordNum + " " + characterNum + " " + parser.getArgs()[0]);
             }
+            // Saves the output to a file
             else if (parser.saveFile() == 1) {
                 try{
                     File textFile = new File(parser.getFileName());
@@ -628,6 +600,7 @@ public class Terminal{
                     System.out.println();
                 }
             }
+            // Appends the output to a file
             else if (parser.saveFile() == 2) {
                 try{
                     File textFile = new File(parser.getFileName());
@@ -649,18 +622,12 @@ public class Terminal{
         }
     }
 
-    // MOHAMED
-    /**
-     * Takes no parameters and displays an enumerated list with the commands you've used in the past 
-     * Example: history 
-     * Output: 
-     * 1   ls 
-     * 2   mkdir tutorial 
-     * 3   history
-     */
+    // Takes no parameters and displays an enumerated list with the commands you've used in the current session.
     public void history()
     {
+        // Checks if the user would like to save the file
         if (parser.saveFile() == 0) {
+            // Prints the command history
             if (commandHistory.size() != 0)
             {
                 for(int i = 0; i < commandHistory.size(); i++)
@@ -675,6 +642,7 @@ public class Terminal{
                 System.out.println();
             }
         }
+        // Saves the output to a file
         else if (parser.saveFile() == 1) {
             if (commandHistory.size() != 0)
             {
@@ -703,6 +671,7 @@ public class Terminal{
                 System.out.println();
             }
         }
+        // Appends the output to a file
         else if (parser.saveFile() == 2) {
             if (commandHistory.size() != 0)
             {
@@ -733,23 +702,19 @@ public class Terminal{
         }
     }
 
+    // Quits the program
     public void exit()
     {
-        // Quits the program
         System.exit(0);
     }
-
-    /*
-        If  the  user  enters  a  wrong  command  or  bad  parameters  (invalid  path,  file instead  of  directory  in  certain  commands,  etc.),
-        the  program  should  print some error messages without terminating. 
-    */
 
     //This method will choose the suitable command method to be called 
     public void chooseCommandAction()
     {
-        
+        // Gets the command name from the parser
         String command = parser.getCommandName();
         try {
+            // Calls the method with the same name as the command
             Method meth = this.getClass().getMethod(command);
             meth.invoke(this);
             
@@ -759,6 +724,7 @@ public class Terminal{
         }
     }
 
+    // Takes the user input and parses it then calls the chosen command
     public void execute()
     {
         System.out.print("TERMINAL>");
@@ -768,42 +734,57 @@ public class Terminal{
         chooseCommandAction();
     }
 
+    // Checks if the file exists
     public void fileCheck(File textFile){
         try{
             fileCheck(textFile);
-
         }
         catch (Exception e){
             System.out.println("A file error has occurred");
             System.out.println();
         }
     }
+
+    // Main method
+    public static void main(String[] args)
+    {
+        Terminal terminal = new Terminal();
+        while (true) {
+            terminal.execute();
+        }
+    }
 }
 
+// This class will parse the user input and save the command name and arguments
 class Parser { 
 
     String commandName; 
     String[] args;
     Boolean arrow = false, doubleArrow = false;
     String fileName;
-        
+
+    // Parses the user input
     public void parse(String input)
     {
+        // Splits the input into tokens
         String[] tokens = input.split(" ");
         commandName = tokens[0];
         
+        // Checks if the user would like to save the file
         if (tokens.length > 2 && tokens[tokens.length - 2].equals(">")) {    
             arrow = true; doubleArrow = false;
             fileName = tokens[tokens.length - 1];
             args = new String[tokens.length - 3];
             System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
         }
+        // Checks if the user would like to append to the file
         else if (tokens.length > 2 && tokens[tokens.length - 2].equals(">>")) {
             arrow = false; doubleArrow = true;
             fileName = tokens[tokens.length - 1];
             args = new String[tokens.length - 3];
             System.arraycopy(tokens, 1, args, 0, tokens.length - 3);
         }
+        // No file
         else{
             arrow = false; doubleArrow = false;
             args = new String[tokens.length - 1];
@@ -812,6 +793,7 @@ class Parser {
         
     }
     
+    // Getters
     public String getCommandName()
     {
         return commandName;
@@ -827,6 +809,7 @@ class Parser {
         return fileName;
     }
 
+    // Checks if the user would like to save the file
     public int saveFile()
     {
         if (arrow) {
