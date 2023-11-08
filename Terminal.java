@@ -737,7 +737,14 @@ public class Terminal{
     // Checks if the file exists
     public void fileCheck(File textFile){
         try{
-            fileCheck(textFile);
+            if (textFile.createNewFile()) {
+                System.out.println("New file " + parser.getFileName() + " created with given input");
+                System.out.println();
+            }
+            else{
+                System.out.println(parser.getFileName() + " successfully overwritten");
+                System.out.println();
+            }
         }
         catch (Exception e){
             System.out.println("A file error has occurred");
